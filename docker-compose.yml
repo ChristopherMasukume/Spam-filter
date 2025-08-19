@@ -1,0 +1,30 @@
+services:
+  flask_app:
+    build: ./app
+    ports:
+      - "5000:5000"
+    networks:
+      - monitoring
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./NoteBook/spam_model.pkl:/app/NoteBook/spam_model.pkl
+      - ./templates:/app/templates
+    networks:
+      - monitoring
+    
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3001:3000"
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge

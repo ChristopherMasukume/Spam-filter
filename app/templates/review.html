@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Review Folder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Review Folder</h1>
+        <a href="{{ url_for('index') }}">Back to Dashboard</a>
+        <table>
+            <tr>
+                <th>Message</th>
+                <th>Spam Probability</th>
+            </tr>
+            {% for msg in messages %}
+            <tr>
+                <td>{{ msg.message }}</td>
+                <td>{{ "%.2f"|format(msg.probability) }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

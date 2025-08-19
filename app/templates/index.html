@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spam Filter App</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        textarea { width: 100%; padding: 10px; margin-bottom: 10px; }
+        button { padding: 10px 15px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        .result { margin-top: 20px; padding: 10px; border-radius: 5px; }
+        .spam { background: #ffdddd; border-left: 4px solid #f44336; }
+        .ham { background: #ddffdd; border-left: 4px solid #4CAF50; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Spam Filter App</h1>
+    
+    <form method="POST" action="/">
+        <label for="message">Enter Message:</label><br>
+        <textarea name="message" id="message" rows="4" required>{{ message if message else '' }}</textarea>
+        
+        <label for="threshold">Risk Level: {{ request.form.get('threshold', '0.5') }}</label><br>
+        <input type="range" name="threshold" id="threshold" min="0.1" max="0.9" step="0.1" 
+               value="{{ request.form.get('threshold', '0.5') }}">
+        
+        <button type="submit">Check Message</button>
+    </form>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+    
+    {% if result %}
+    <div class="result {{ result.lower() }}">
+        <strong>Result:</strong> {{ result }}<br>
+        <strong>Probability:</strong> {{ probability }}
+    </div>
+    {% endif %}
+
+    <script>
+        // Update threshold display when slider moves
+        document.getElementById('threshold').addEventListener('input', function() {
+            this.nextElementSibling.textContent = 'Risk Level: ' + this.value;
+        });
+    </script>
+</body>
+</html>
